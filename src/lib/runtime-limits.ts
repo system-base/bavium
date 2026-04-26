@@ -1,0 +1,1 @@
+export const MAX_REPEAT_ITERATIONS = 100;

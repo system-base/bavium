@@ -1,0 +1,75 @@
+{
+  "id": "send-usdc",
+  "name": "Send USDC",
+  "description": "Transfer USDC to any address on Base. Validates balance before sending.",
+  "version": "1.0.0",
+  "author": "base-system",
+  "icon": "💸",
+  "color": "#FF6B35",
+  "category": "wallet",
+  "tags": ["payment", "transfer", "usdc"],
+  "inputs": [
+    {
+      "id": "recipient",
+      "label": "Recipient Address",
+      "type": "address",
+      "required": true,
+      "placeholder": "0x... or name.base.eth"
+    },
+    {
+      "id": "amount",
+      "label": "Amount (USDC)",
+      "type": "amount",
+      "required": true,
+      "default": "10",
+      "constraints": { "min": "0.01", "max": "10000", "token": "USDC" }
+    }
+  ],
+  "steps": [
+    {
+      "id": "check-balance",
+      "skill": "logic",
+      "action": "math",
+      "params": {
+        "a": 150,
+        "b": 0,
+        "op": "+"
+      },
+      "output": { "as": "currentBalance" }
+    },
+    {
+      "id": "validate-funds",
+      "skill": "logic",
+      "action": "assert",
+      "dependsOn": ["check-balance"],
+      "params": {
+        "condition": "{{currentBalance}} >= {{input.amount}}",
+        "errorMessage": "Insufficient USDC balance"
+      }
+    },
+    {
+      "id": "send-payment",
+      "skill": "logic",
+      "action": "notify",
+      "dependsOn": ["validate-funds"],
+      "params": {
+        "message": "Sending {{input.amount}} USDC to {{input.recipient}}",
+        "level": "info"
+      },
+      "confirm": true,
+      "output": { "as": "txResult" }
+    },
+    {
+      "id": "confirm-notification",
+      "skill": "logic",
+      "action": "format",
+      "dependsOn": ["send-payment"],
+      "params": {
+        "template": "✅ {{input.amount}} USDC sent to {{input.recipient}}"
+      },
+      "output": { "as": "summary" }
+    }
+  ],
+  "createdAt": "2026-02-21T00:00:00Z",
+  "updatedAt": "2026-02-21T00:00:00Z"
+}
