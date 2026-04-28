@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/layout/Footer";
@@ -5,6 +6,12 @@ import { LandingNav } from "@/components/layout/LandingNav";
 import { LandingBuilderShowcase } from "@/components/layout/LandingBuilderShowcase";
 import { LandingAIAgent } from "@/components/layout/LandingAIAgent";
 import { BuilderSkillsShowcase } from "@/components/layout/BuilderSkillsShowcase";
+
+export const metadata: Metadata = {
+  other: {
+    "base:app_id": "69e9025956caa7489826f52d",
+  },
+};
 
 export default function LandingPage() {
   return (
